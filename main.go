@@ -12,7 +12,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/camptocamp/prometheus-kerberos-exporter/exporter"
+	"github.com/camptocamp/prometheus-kerberos-exporter/internal/exporter"
 )
 
 type Config struct {
