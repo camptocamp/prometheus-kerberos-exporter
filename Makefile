@@ -3,7 +3,7 @@ VERSION = $(shell git describe --always --dirty)
 COMMIT_SHA1 = $(shell git rev-parse HEAD)
 BUILD_DATE = $(shell date +%Y-%m-%d)
 
-all: vendor lint vet prometheus-kerberos-exporter
+all: lint vet prometheus-kerberos-exporter
 
 prometheus-kerberos-exporter: main.go $(DEPS)
 	GO111MODULE=on CGO_ENABLED=0 GOOS=linux \
@@ -25,8 +25,5 @@ lint:
 
 vet: main.go
 	go vet $<
-
-vendor:
-	go mod vendor
 
 .PHONY: all lint vet clean vendor
