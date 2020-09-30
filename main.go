@@ -30,9 +30,9 @@ type Config struct {
 
 var (
 	// VERSION, BUILD_DATE, GIT_COMMIT are filled in by the build script
-	version    = "<<< filled in by build >>>"
-	buildDate  = "<<< filled in by build >>>"
-	commitSha1 = "<<< filled in by build >>>"
+	version = "<<< filled in by build >>>"
+	date    = "<<< filled in by build >>>"
+	commit  = "<<< filled in by build >>>"
 )
 
 func main() {

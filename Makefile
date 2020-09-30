@@ -8,7 +8,7 @@ all: lint vet prometheus-kerberos-exporter
 prometheus-kerberos-exporter: main.go $(DEPS)
 	GO111MODULE=on CGO_ENABLED=0 GOOS=linux \
 	  go build -a \
-		  -ldflags="-X main.version=$(VERSION) -X main.commitSha1=$(COMMIT_SHA1) -X main.buildDate=$(BUILD_DATE)" \
+		  -ldflags="-X main.version=$(VERSION) -X main.commit=$(COMMIT_SHA1) -X main.date=$(BUILD_DATE)" \
 	    -installsuffix cgo -o $@ $<
 	strip $@
 
