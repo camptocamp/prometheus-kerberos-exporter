@@ -11,6 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+// Exporter : inputs
 type Exporter struct {
 	username string
 	realm    string
@@ -18,12 +19,7 @@ type Exporter struct {
 	metrics  map[string]*prometheus.GaugeVec
 }
 
-var (
-	metricMap = map[string]string{
-		"kerberos_status_available": "kerberos_status_available",
-	}
-)
-
+// NewKerberosExporter : initialize an Exporter
 func NewKerberosExporter(realm string, username string, keytabFile string) (e *Exporter, err error) {
 	e = &Exporter{
 		username: username,
@@ -41,18 +37,21 @@ func NewKerberosExporter(realm string, username string, keytabFile string) (e *E
 	return
 }
 
+// Describe : describe metrics
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	for _, m := range e.metrics {
 		m.Describe(ch)
 	}
 }
 
+// Collect : collect metrics
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	for _, m := range e.metrics {
 		m.Collect(ch)
 	}
 }
 
+// Scrape : scrape metrics
 func (e *Exporter) Scrape(kdc []string, interval time.Duration) {
 	for {
 		var state int

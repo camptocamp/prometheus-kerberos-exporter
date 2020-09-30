@@ -15,6 +15,7 @@ import (
 	"github.com/camptocamp/prometheus-kerberos-exporter/internal/exporter"
 )
 
+// Config : binary flags
 type Config struct {
 	Version        bool   `short:"v" long:"version" description:"Show version."`
 	Username       string `short:"u" long:"username" description:"A username to use to connect to kerberos server." env:"KERBEROS_USER" required:"true"`
@@ -22,7 +23,7 @@ type Config struct {
 	KeytabFile     string `short:"k" long:"keytab" description:"A keytab file to use to connect to kerberos server." env:"KERBEROS_KEYTAB_FILE" required:"true"`
 	Servers        string `short:"s" long:"server" description:"A list of servers to connect to. (separated by commas)" env:"KERBEROS_SERVERS" required:"true"`
 	ScrapeInterval string `long:"scrape-interval" description:"Duration between two scrapes." env:"KERBEROS_SCRAPE_INTERVAL" default:"5s"`
-	ListenAddress  string `long:"listen-address" description:"Address to listen on for web interface and telemetry." env:"KERBEROS_LISTEN_ADDRESS" default:"0.0.0.0:9259"`
+	ListenAddress  string `long:"listen-address" description:"Address to listen on for web interface and telemetry." env:"KERBEROS_LISTEN_ADDRESS" default:"0.0.0.0:9889"`
 	MetricPath     string `long:"metric-path" description:"Path under which to expose metrics." env:"KERBEROS_METRIC_PATH" default:"/metrics"`
 	Verbose        bool   `long:"verbose" description:"Enable debug mode" env:"KERBEROS_VERBOSE"`
 }
@@ -85,7 +86,7 @@ func main() {
 
 	http.Handle(c.MetricPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`
+		_, err := w.Write([]byte(`
 <html>
 <head><title>Prometheus Kerberos Exporter v` + version + `</title></head>
 <body>
@@ -94,6 +95,9 @@ func main() {
 </body>
 </html>
 						`))
+		if err != nil {
+			log.Infof("An error occured while writing http response: %v", err)
+		}
 	})
 
 	log.Infof("Providing metrics at %s%s", c.ListenAddress, c.MetricPath)
