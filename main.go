@@ -47,7 +47,7 @@ func main() {
 	}
 
 	log.Printf("Kerberos Metrics Exporter %s    build date: %s    sha1: %s    Go: %s",
-		version, buildDate, commitSha1,
+		version, date, commit,
 		runtime.Version(),
 	)
 
@@ -81,7 +81,7 @@ func main() {
 		Name: "kerberos_exporter_build_info",
 		Help: "Kerberos exporter build informations",
 	}, []string{"version", "commit_sha", "build_date", "golang_version"})
-	buildInfo.WithLabelValues(version, commitSha1, buildDate, runtime.Version()).Set(1)
+	buildInfo.WithLabelValues(version, commit, date, runtime.Version()).Set(1)
 	prometheus.MustRegister(buildInfo)
 
 	http.Handle(c.MetricPath, promhttp.Handler())
